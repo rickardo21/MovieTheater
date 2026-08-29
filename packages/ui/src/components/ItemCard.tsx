@@ -21,15 +21,15 @@ export const ItemCard: React.FC<ItemCardProps> = ({
     return (
         <>
             {skeleton || !item ? (
-                <div key={index} className="w-62.5 h-47.5 cursor-pointer rounded-[28px] flex items-center px-5 bg-cover bg-center bg-no-repeat shrink-0 bg-[#181818] animate-pulse" />
+                <div key={index} className="w-62.5 max-h-47.5 h-full cursor-pointer rounded-[28px] flex items-center px-5 bg-cover bg-center bg-no-repeat shrink-0 bg-[#181818] animate-pulse" />
             ) : (
                 <div 
                     onClick={() => openPopup(item, type)} 
                     key={index} 
-                    className="w-62.5 h-47.5 cursor-pointer rounded-[28px] flex items-center px-5 bg-cover bg-center bg-no-repeat shrink-0" 
+                    className="w-62.5 h-full max-h-47.5 cursor-pointer rounded-[28px] flex items-center px-5 bg-cover bg-center bg-no-repeat shrink-0" 
                     style={{ backgroundImage: `url('${BG_BASE_URL}/w500${item.bg}')` }} 
                 >
-                    <img className="object-contain" src={`${BG_BASE_URL}/w780${item.logo}`} alt="" />
+                    <img className="object-contain h-full" src={`${BG_BASE_URL}/w780${item.logo}`} alt="" />
                 </div>
             )}
         </>

@@ -15,7 +15,7 @@ export const PlayButton = ({ id }: { id: number }) => {
 
     return (
 
-        <div onClick={handlePlay} className="w-54 cursor-pointer text-white h-14 rounded-2xl font-semibold text-28px gap-4 bg-linear-to-r from-[#ff484b] to-[#ff1e1e] flex items-center justify-center">
+        <div onClick={handlePlay} className="w-54 cursor-pointer text-[20px] h-14 rounded-2xl font-semibold gap-4 bg-linear-to-r from-[#ff484b] to-[#ff1e1e] flex items-center justify-center">
             <SFIcon icon={sfPlayFill} size={28} />
             <span>Watch Now</span>
         </div>

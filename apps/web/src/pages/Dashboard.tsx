@@ -97,13 +97,13 @@ const Dashboard = () => {
                                     <p className="text-white w-2/4 text-sm">{topFilm.overview}</p>
                                     <div className="flex gap-5">
                                         <PlayButton id={topFilm.id}/>
-                                        <div className="w-54 cursor-pointer h-14 rounded-2xl font-semibold text-28px gap-4 bg-linear-to-r from-[#363636] to-[#131313] flex items-center justify-center">
+                                        <div className="w-54 cursor-pointer text-[20px] h-14 rounded-2xl font-semibold text-28px gap-4 bg-linear-to-r from-[#363636] to-[#131313] flex items-center justify-center">
                                             <SFIcon icon={sfPlus} size={28} />
                                             <span>Add to List</span>
                                         </div>
                                     </div>
                                     <div className="w-full p-2.5 h-47.5 backdrop-blur-2xl rounded-[34px] flex items-center justify-around gap-7.5">
-                                        {rowFilm?.map((film, index) => {
+                                        {rowFilm?.slice(0,5).map((film, index) => {
                                             return (
                                                 <ItemCard type="movie" key={index} index={index} item={film} />
                                             )
