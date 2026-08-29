@@ -1,6 +1,6 @@
 import { sfPlus } from "@bradleyhodges/sfsymbols"
 import SFIcon from "@bradleyhodges/sfsymbols-react"
-import { NavBar } from "@movietheater/ui/src/components/navBar"
+import { NavBar } from "@movietheater/ui/src/components/NavBar"
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useClient } from "../store/ClientContext";
