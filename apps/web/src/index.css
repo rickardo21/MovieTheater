@@ -1,0 +1,40 @@
+@import "tailwindcss";
+@source "../../../packages/ui";
+
+@theme {
+  --color-netflix-red: #E50914;
+  --color-match-green: #46D369;
+  --color-glass: rgba(20, 20, 20, 0.4);
+  --color-glass-border: rgba(255, 255, 255, 0.1);
+  --color-glass-highlight: rgba(255, 255, 255, 0.05);
+}
+
+body {
+  margin: 0;
+  background: #111111;
+  background-attachment: fixed;
+  color: white;
+  /* SF Pro as primary, Inter and system-ui as fallbacks */
+  font-family: -apple-system, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', 'Inter', system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  min-height: 100vh;
+}
+
+/* Hide scrollbar on horizontal scroll rows */
+.hide-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbar completely */
+::-webkit-scrollbar {
+  display: none;
+}
+html, body {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}

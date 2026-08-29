@@ -1,0 +1,9 @@
+{
+  "name": "@movietheater/ui",
+  "version": "0.0.0",
+  "main": "src/index.ts",
+  "dependencies": {
+    "framer-motion": "^13.1.1",
+    "lucide-react": "^1.33.0"
+  }
+}
