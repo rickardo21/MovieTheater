@@ -7,7 +7,9 @@
   ],
   "scripts": {
     "dev:web": "npm run dev -w apps/web",
-    "dev:tv": "npm run dev -w apps/tv-lg"
+    "dev:tv": "npm run dev -w apps/tv-lg",
+    "build:web": "npm run build -w apps/web",
+    "build:tv": "npm run build -w apps/tv-lg"
   },
   "devDependencies": {
     "typescript": "^5.0.0"
