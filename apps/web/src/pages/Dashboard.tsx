@@ -103,7 +103,7 @@ const Dashboard = () => {
                                         </div>
                                     </div>
                                     <div className="w-full p-2.5 h-47.5 backdrop-blur-2xl rounded-[34px] flex items-center justify-around gap-7.5">
-                                        {rowFilm.map((film, index) => {
+                                        {rowFilm?.map((film, index) => {
                                             return (
                                                 <ItemCard type="movie" key={index} index={index} item={film} />
                                             )
