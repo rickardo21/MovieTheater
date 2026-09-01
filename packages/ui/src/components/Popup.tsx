@@ -1,9 +1,6 @@
 import { useEffect, type ReactNode } from "react";
 import { createPortal } from "react-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import SFIcon from "@bradleyhodges/sfsymbols-react";
-import { sfXmark } from "@bradleyhodges/sfsymbols";
-
 // ─── Types ───────────────────────────────────────────────────────────────────
 
 export type PopupPosition =
@@ -59,7 +56,7 @@ export interface PopupProps {
     backgroundImage?: string;
     logoImage?: string;
     /** Optional ref forwarded to the scrollable body container */
-    scrollContainerRef?: React.RefObject<HTMLDivElement>;
+    scrollContainerRef?: React.RefObject<HTMLDivElement | null>;
 }
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────
@@ -154,17 +151,12 @@ const ACTION_STYLES: Record<string, string> = {
 export const Popup = ({
     isOpen,
     onClose,
-    title,
-    subtitle,
     children,
     actions = [],
     size = "md",
     position = "center",
     closeOnBackdrop = true,
-    showCloseButton = true,
     backdrop = true,
-    backgroundImage,
-    logoImage,
     className = "",
     scrollContainerRef,
 }: PopupProps) => {
