@@ -15,6 +15,8 @@ const TVShowsPage = () => {
     const [error, setError] = useState<string>("");
     const [isLoading, setIsLoading] = useState<boolean>(false);
 
+
+
     const fetchTVShows = async () => {
         try {
             setIsLoading(true);
@@ -28,12 +30,10 @@ const TVShowsPage = () => {
             )
 
             setShows(enrichedShows);
-
         } catch (error: any) {
             setError(error?.message || "Something went wrong")
         } finally {
             setIsLoading(false);
-
         }
     }
 

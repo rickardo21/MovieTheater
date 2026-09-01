@@ -58,6 +58,8 @@ export interface PopupProps {
     className?: string;
     backgroundImage?: string;
     logoImage?: string;
+    /** Optional ref forwarded to the scrollable body container */
+    scrollContainerRef?: React.RefObject<HTMLDivElement>;
 }
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────
@@ -164,6 +166,7 @@ export const Popup = ({
     backgroundImage,
     logoImage,
     className = "",
+    scrollContainerRef,
 }: PopupProps) => {
     const { width, height } = resolveSize(size);
     const wrapperStyle = resolveWrapperStyle(position);
@@ -205,28 +208,27 @@ export const Popup = ({
                             animate={{ opacity: 1, scale: 1, y: 0 }}
                             exit={{ opacity: 0, scale: 0.92, y: 16 }}
                             transition={{ type: "spring", bounce: 0.22, duration: 0.4 }}
-                            style={{ width, height }}
+                            style={{ width, height, maxHeight: "90vh", overflowY: "auto" }}
                             className={[
                                 "flex flex-col rounded-[28px] bg-cover bg-center bg-no-repeat",
                                 "shadow-[0_24px_80px_rgba(0,0,0,0.7)] bg-[#1e1e1e]",
                                 "backdrop-blur-2xl",
-                                "border border-white/10 overflow-hidden",
+                                "border border-white/10",
                                 className,
                             ].join(" ")}
                         >
-                            {backgroundImage && logoImage && (
+                            {/* {backgroundImage && logoImage && (
                                 <div>
                                     <div
                                         style={{ backgroundImage: `url('${backgroundImage}')` }}
                                         className="absolute top-0 left-0 h-87.5 w-full bg-cover bg-center bg-no-repeat"
                                     >
-                                        
                                     </div>
                                     <div className="w-full h-87.5 bg-linear-to-b from-transparent to-[#1e1e1e] absolute top-0 left-0" />
                                 </div>
-                            )}
+                            )} */}
                             {/* ── Header ──────────────────────────────────── */}
-                            {(title || showCloseButton) && (
+                            {/* {(title || showCloseButton) && (
                                 <div className="flex items-start justify-between px-6 pt-6 pb-4">
                                     <div className="flex flex-col gap-1">
                                         {title && (
@@ -247,11 +249,11 @@ export const Popup = ({
                                         </div>
                                     )}
                                 </div>
-                            )}
+                            )} */}
 
                             {/* ── Body ────────────────────────────────────── */}
                             {children && (
-                                <div className="flex-1 overflow-y-auto z-3000 px-6 py-5 text-white/80 text-sm leading-relaxed">
+                                <div ref={scrollContainerRef} className="flex-1 overflow-y-auto z-3000 text-white/80 text-sm leading-relaxed">
                                     {children}
                                 </div>
                             )}

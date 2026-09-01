@@ -9,7 +9,7 @@ import { sfXmark } from "@bradleyhodges/sfsymbols";
 // import { useState } from "react";
 
 export const GlobalVideoPlayer = () => {
-    const { playingVideoId, closeVideo } = usePopupManager();
+    const { playingVideoId, closeVideo, } = usePopupManager();
 
     if (!playingVideoId) return null;
 
