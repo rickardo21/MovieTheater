@@ -284,7 +284,7 @@ export const GlobalVideoPlayer = () => {
                         if (cancelled || !hls) return;
 
                         // Quality levels — default to highest
-                        const levels = hls.levels.map((lvl, idx) => ({
+                        const levels = hls.levels.map((lvl: Hls["levels"][number], idx: number) => ({
                             label: lvl.height ? `${lvl.height}p` : `${Math.round(lvl.bitrate / 1000)}kbps`,
                             level: idx,
                         }));
@@ -294,7 +294,7 @@ export const GlobalVideoPlayer = () => {
                         setCurrentLevel(highest);
 
                         // Audio tracks
-                        const tracks = hls.audioTracks.map((t, idx) => ({
+                        const tracks = hls.audioTracks.map((t: Hls["audioTracks"][number], idx: number) => ({
                             name: t.name,
                             lang: t.lang || "",
                             index: idx,
@@ -303,7 +303,7 @@ export const GlobalVideoPlayer = () => {
                         setCurrentAudio(hls.audioTrack);
 
                         // Subtitle tracks
-                        const subs = hls.subtitleTracks.map((t, idx) => ({
+                        const subs = hls.subtitleTracks.map((t: Hls["subtitleTracks"][number], idx: number) => ({
                             name: t.name,
                             lang: t.lang || "",
                             index: idx,
@@ -331,7 +331,7 @@ export const GlobalVideoPlayer = () => {
                         resetHideControlsTimer();
                     });
 
-                    hls.on(Hls.Events.ERROR, (_, err) => {
+                    hls.on(Hls.Events.ERROR, (_: string, err: { fatal: boolean }) => {
                         if (err.fatal && !cancelled) {
                             setError("Errore durante il caricamento dello stream");
                             setLoading(false);
