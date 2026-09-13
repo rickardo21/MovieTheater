@@ -15,10 +15,12 @@
     "@bradleyhodges/sfsymbols-types": "^7.0.4",
     "@movietheater/shared": "*",
     "@movietheater/ui": "*",
+    "firebase": "^12.19.0",
     "framer-motion": "^13.1.1",
     "lucide-react": "^1.33.0",
     "react": "^19.2.8",
     "react-dom": "^19.2.8",
+    "react-qr-code": "^2.2.0",
     "react-router-dom": "^7.18.2"
   },
   "devDependencies": {

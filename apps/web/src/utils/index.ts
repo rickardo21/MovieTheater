@@ -9,6 +9,7 @@ export const enrichWithHeroImages = async (
         items.map(async (item) => {
             try {
                 const { backdrop, logo } = await getHeroImages(item.id);
+                
                 return {
                     ...item,
                     bg: backdrop?.file_path ?? item.backdrop_path ?? null,

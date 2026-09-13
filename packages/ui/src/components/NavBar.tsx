@@ -3,6 +3,9 @@ import SFIcon from "@bradleyhodges/sfsymbols-react";
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import type { IconDefinition } from "@bradleyhodges/sfsymbols-types";
+import QRCode from "react-qr-code";
+import { Popup } from "./Popup";
+import { useAuth } from "../../../../apps/web/src/store/AuthContext";
 
 type ItemsType = {
     label: string,
@@ -17,6 +20,8 @@ export interface NavBarProps {
 }
 
 export const NavBar = ({ activeTab, onTabChange, searchQuery, onSearchChange }: NavBarProps = {}) => {
+    const { logout, userProfile, userSettings, updateSettings } = useAuth();
+
     const items: ItemsType[] = [
         {
             label: "Home"
@@ -43,6 +48,19 @@ export const NavBar = ({ activeTab, onTabChange, searchQuery, onSearchChange }: 
     }
 
     const [isMinimaze, setIsMinimaze] = useState<boolean>(false)
+    const [isSettingsOpen, setIsSettingsOpen] = useState<boolean>(false)
+    const [showRemoteQr, setShowRemoteQr] = useState<boolean>(false)
+
+    const remotePairingUrl = `${window.location.origin}/remote-pair?uid=${userProfile?.uid || 'guest'}&session=${Date.now()}`;
+
+    const handleLogout = async () => {
+        try {
+            setIsSettingsOpen(false);
+            await logout();
+        } catch (err) {
+            console.error("Errore durante il logout:", err);
+        }
+    };
 
     return (
         <div className="flex items-center z-2000 justify-center px-20 h-10 w-full fixed top-4 left-0">
@@ -122,11 +140,140 @@ export const NavBar = ({ activeTab, onTabChange, searchQuery, onSearchChange }: 
             </AnimatePresence>
             {
                 !isMinimaze && (
-                    <div className="backdrop-blur-2xl bg-[#1b1b1b] shadow-[0_3px_10px_rgb(0,0,0,0.2)] w-10 transition-all duration-300 rounded-full absolute right-8 flex items-center justify-center top-0 h-10 ">
-                        <SFIcon icon={sfGear} size={20} className="cursor-pointer text-white" />
+                    <div
+                        onClick={() => setIsSettingsOpen(true)}
+                        className="backdrop-blur-2xl bg-[#1b1b1b] shadow-[0_3px_10px_rgb(0,0,0,0.2)] w-10 transition-all duration-300 rounded-full absolute right-8 flex items-center justify-center top-0 h-10 cursor-pointer hover:bg-white/10"
+                    >
+                        <SFIcon icon={sfGear} size={20} className="text-white" />
                     </div>
                 )
             }
+
+            {/* ── Settings Popup ─────────────────────────────────────── */}
+            <Popup
+                isOpen={isSettingsOpen}
+                onClose={() => setIsSettingsOpen(false)}
+                size="sm"
+                position="center"
+                closeOnBackdrop
+                backdrop
+            >
+                <div className="px-6 py-6 flex flex-col gap-4">
+                    <div className="flex items-center justify-between">
+                        <h2 className="text-white text-lg font-semibold">Impostazioni</h2>
+                        <button
+                            onClick={() => setIsSettingsOpen(false)}
+                            className="text-white/50 hover:text-white text-sm transition-colors cursor-pointer"
+                        >
+                            ✕
+                        </button>
+                    </div>
+
+                    {userProfile?.displayName || userProfile?.email ? (
+                        <div className="flex flex-col bg-white/5 p-3 rounded-xl border border-white/10">
+                            <span className="text-white text-sm font-semibold">{userProfile.displayName || 'Utente'}</span>
+                            <span className="text-white/40 text-xs">{userProfile.email}</span>
+                        </div>
+                    ) : null}
+
+                    <div className="h-px bg-white/10" />
+
+                    {/* Sezione tema */}
+                    <div className="flex flex-col gap-2">
+                        <p className="text-white/50 text-xs uppercase tracking-widest">Tema</p>
+                        <div className="flex gap-2">
+                            <button 
+                                onClick={() => updateSettings({ theme: 'dark' })}
+                                className={`flex-1 py-2 rounded-xl text-sm font-medium transition-colors cursor-pointer ${
+                                    userSettings.theme === 'dark' ? 'bg-white/20 text-white' : 'bg-white/5 text-white/50 hover:bg-white/10'
+                                }`}
+                            >
+                                🌙 Scuro
+                            </button>
+                            <button 
+                                onClick={() => updateSettings({ theme: 'light' })}
+                                className={`flex-1 py-2 rounded-xl text-sm font-medium transition-colors cursor-pointer ${
+                                    userSettings.theme === 'light' ? 'bg-white/20 text-white' : 'bg-white/5 text-white/50 hover:bg-white/10'
+                                }`}
+                            >
+                                ☀️ Chiaro
+                            </button>
+                        </div>
+                    </div>
+
+                    <div className="h-px bg-white/10" />
+
+                    {/* Sezione lingua */}
+                    <div className="flex flex-col gap-2">
+                        <p className="text-white/50 text-xs uppercase tracking-widest">Lingua</p>
+                        <select 
+                            value={userSettings.language}
+                            onChange={(e) => updateSettings({ language: e.target.value })}
+                            className="bg-white/10 text-white text-sm rounded-xl px-3 py-2 outline-none border border-white/10 cursor-pointer"
+                        >
+                            <option value="it" className="bg-[#1b1b1b]">🇮🇹 Italiano</option>
+                            <option value="en" className="bg-[#1b1b1b]">🇬🇧 English</option>
+                        </select>
+                    </div>
+
+                    <div className="h-px bg-white/10" />
+
+                    {/* Sezione qualità */}
+                    <div className="flex items-center justify-between">
+                        <div className="flex flex-col">
+                            <span className="text-white text-sm font-medium">Qualità automatica</span>
+                            <span className="text-white/40 text-xs">Adatta la qualità alla connessione</span>
+                        </div>
+                        <div 
+                            onClick={() => updateSettings({ autoplay: !userSettings.autoplay })}
+                            className={`w-10 h-6 rounded-full flex items-center cursor-pointer transition-colors ${
+                                userSettings.autoplay ? 'bg-emerald-500' : 'bg-white/20'
+                            }`}
+                        >
+                            <div className={`w-4 h-4 rounded-full bg-white transition-all ${
+                                userSettings.autoplay ? 'ml-5' : 'ml-1'
+                            }`} />
+                        </div>
+                    </div>
+
+                    <div className="h-px bg-white/10" />
+
+                    {/* Sezione Telecomando QR Code */}
+                    <div className="flex flex-col gap-2">
+                        <div className="flex items-center justify-between">
+                            <div className="flex flex-col">
+                                <span className="text-white text-sm font-medium">Associa Telecomando</span>
+                                <span className="text-white/40 text-xs">QR code per app telecomando</span>
+                            </div>
+                            <button
+                                onClick={() => setShowRemoteQr(!showRemoteQr)}
+                                className="px-3 py-1 rounded-xl bg-white/10 hover:bg-white/20 text-white text-xs font-semibold transition-colors cursor-pointer"
+                            >
+                                {showRemoteQr ? 'Nascondi QR' : 'Mostra QR'}
+                            </button>
+                        </div>
+
+                        {showRemoteQr && (
+                            <div className="flex flex-col items-center p-3 bg-white rounded-2xl mt-1">
+                                <QRCode value={remotePairingUrl} size={130} />
+                                <span className="text-black/60 text-[10px] font-semibold mt-2 text-center">
+                                    Scansiona dall'app telecomando
+                                </span>
+                            </div>
+                        )}
+                    </div>
+
+                    <div className="h-px bg-white/10" />
+
+                    {/* ── Logout Button ── */}
+                    <button
+                        onClick={handleLogout}
+                        className="w-full py-2.5 rounded-xl bg-red-500/15 hover:bg-red-500/25 border border-red-500/30 text-red-400 text-sm font-semibold transition-all cursor-pointer flex items-center justify-center gap-2 mt-1"
+                    >
+                        <span>Disconnetti (Logout)</span>
+                    </button>
+                </div>
+            </Popup>
         </div>
     );
 };

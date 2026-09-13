@@ -3,13 +3,17 @@
   "private": true,
   "workspaces": [
     "apps/*",
-    "packages/*"
+    "packages/*",
+    "server"
+
   ],
   "scripts": {
     "dev:web": "npm run dev -w apps/web",
     "dev:tv": "npm run dev -w apps/tv-lg",
     "build:web": "npm run build -w apps/web",
-    "build:tv": "npm run build -w apps/tv-lg"
+    "build:tv": "npm run build -w apps/tv-lg",
+    "dev:server": "npm run dev -w server",
+    "build:server": "npm run build -w server"
   },
   "devDependencies": {
     "typescript": "^5.0.0"
@@ -17,6 +21,7 @@
   "dependencies": {
     "@bradleyhodges/sfsymbols": "^7.0.4",
     "@bradleyhodges/sfsymbols-react": "^7.0.4",
-    "@bradleyhodges/sfsymbols-types": "^7.0.4"
+    "@bradleyhodges/sfsymbols-types": "^7.0.4",
+    "hls.js": "^1.7.2"
   }
 }

@@ -4,12 +4,19 @@ import { useNavBar } from "../store/NavBarContext";
 import { Loader } from "lucide-react";
 import { ItemCard } from "@movietheater/ui";
 import { enrichWithHeroImages } from "../utils";
+import { getTvHeroImages } from "@movietheater/shared/src/api";
 
+
+
+import { useDebounce } from "../hooks/useDebounce";
+import { clientCache } from "../utils/cache";
 
 const TVShowsPage = () => {
 
     const client = useClient();
     const { searchQuery } = useNavBar();
+
+    const debouncedSearchQuery = useDebounce(searchQuery, 500);
 
     const [shows, setShows] = useState<any[] | null>(null);
     const [error, setError] = useState<string>("");
@@ -17,18 +24,25 @@ const TVShowsPage = () => {
 
 
 
-    const fetchTVShows = async () => {
+    const fetchTVShows = async (query: string) => {
         try {
+            const cachedResult = clientCache.get(`tv_search_${query}`);
+            if (cachedResult) {
+                setShows(cachedResult);
+                return;
+            }
+
             setIsLoading(true);
-            const res = await client.tv.getByKeyword(searchQuery || "")
+            const res = await client.tv.searchTv(query)
 
             if (res.results == null) return;
 
             const enrichedShows = await enrichWithHeroImages(
                 res.results,
-                (id) => client.tv.getHeroImages(id)
+                (id) => getTvHeroImages(id)
             )
 
+            clientCache.set(`tv_search_${query}`, enrichedShows, 300000); // 5 minutes cache
             setShows(enrichedShows);
         } catch (error: any) {
             setError(error?.message || "Something went wrong")
@@ -38,12 +52,11 @@ const TVShowsPage = () => {
     }
 
     useEffect(() => {
-        if (searchQuery != null && searchQuery.length > 0) {
-            fetchTVShows();
+        if (debouncedSearchQuery != null && debouncedSearchQuery.length > 0) {
+            fetchTVShows(debouncedSearchQuery);
             setError("");
         }
-    }, [searchQuery])
-
+    }, [debouncedSearchQuery])
 
     return (
         <div className="h-full w-full pt-28 pb-8 px-8 flex flex-col gap-8">

@@ -203,7 +203,7 @@ export const Popup = ({
                             style={{ width, height, maxHeight: "90vh", overflowY: "auto" }}
                             className={[
                                 "flex flex-col rounded-[28px] bg-cover bg-center bg-no-repeat",
-                                "shadow-[0_24px_80px_rgba(0,0,0,0.7)] bg-[#1e1e1e]",
+                                "shadow-[0_24px_80px_rgba(0,0,0,0.7)]",
                                 "backdrop-blur-2xl",
                                 "border border-white/10",
                                 className,

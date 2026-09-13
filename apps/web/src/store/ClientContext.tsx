@@ -9,8 +9,7 @@ const ClientContext = createContext<ClientContextType | undefined>(undefined);
 
 export const ClientProvider = ({ children }: { children: ReactNode }) => {
     const client = useMemo(() => {
-        const TMBD_TOKEN = import.meta.env.VITE_TMDB_ACCESS_TOKEN;
-        return new ApiClient(TMBD_TOKEN);
+        return new ApiClient();
     }, []);
 
     return (

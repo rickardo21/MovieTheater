@@ -21,11 +21,51 @@ body {
   min-height: 100vh;
 }
 
+input[type="range"] {
+  -webkit-appearance: none;
+  width: 80px;
+  background: transparent;
+}
+
+input[type="range"]::-webkit-slider-runnable-track {
+  height: 6px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 999px;
+}
+
+/* Thumb nascosto */
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 0;
+  height: 0;
+  background: transparent;
+  border: none;
+  margin-top: 0;
+  cursor: pointer;
+}
+
+/* Firefox */
+/* input[type="range"]::-moz-range-track {
+  height: 6px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 999px;
+}
+
+input[type="range"]::-moz-range-thumb {
+  width: 0;
+  height: 0;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+} */
+
+
 /* Hide scrollbar on horizontal scroll rows */
 .hide-scrollbar {
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
+
 .hide-scrollbar::-webkit-scrollbar {
   display: none;
 }
@@ -34,7 +74,9 @@ body {
 ::-webkit-scrollbar {
   display: none;
 }
-html, body {
+
+html,
+body {
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
