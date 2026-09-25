@@ -1,6 +1,5 @@
 import SFIcon from "@bradleyhodges/sfsymbols-react";
 import { sfMagnifyingglass } from "@bradleyhodges/sfsymbols";
-import { sfNumbers } from "@bradleyhodges/sfsymbols";
 import { sfDeleteBackwardFill } from "@bradleyhodges/sfsymbols";
 
 import { useState } from "react";
