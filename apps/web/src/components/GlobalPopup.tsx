@@ -313,7 +313,7 @@ export const GlobalPopup = () => {
                                 ?.slice((pagingIndex - 1) * 7, pagingIndex * 7)
                                 .map((episode: any, index: number) => {
                                     const watchTime = watchHistory.find(
-                                        (h) => String(h.id) === String(episode.id)
+                                        (h) => String(h.id) === String(activeItem.id) && h.season === seasonIndex && h.episode === episode.episode_number
                                     )
 
                                     const watchingPercentage = watchTime ? (watchTime.progressSeconds / watchTime.durationSeconds) * 100 : 0;
@@ -351,8 +351,8 @@ export const GlobalPopup = () => {
                                                 className="bg-[#1b1b1b] cursor-pointer bg-contain relative bg-no-repeat bg-right group w-full grid grid-cols-[100px_1fr_150px]  h-full overflow-hidden rounded-xl"
                                             >
                                                 <span
-                                                    style={{
-                                                        background: `linear-gradient(to bottom, #ff3b30 90%, rgba(255,255,255,0.4) 10%)`,
+                                                    style={{ // gradiente in base a quanto ho guardato
+                                                        background: `linear-gradient(to bottom, #ff3b30 ${watchingPercentage}%, rgba(255,255,255,0.4) ${watchingPercentage}%)`,
                                                         WebkitBackgroundClip: "text",
                                                         backgroundClip: "text",
                                                         color: "transparent",

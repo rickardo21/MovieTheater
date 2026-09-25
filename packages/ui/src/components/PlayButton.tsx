@@ -29,7 +29,7 @@ export const PlayButton = ({
     season,
     episode,
     episodeTitle,
-    className = "w-54 cursor-pointer text-[20px] h-14 rounded-2xl text-white font-semibold gap-4 bg-linear-to-r from-[#ff484b] to-[#ff1e1e] flex items-center justify-center transition-transform hover:scale-105 active:scale-95",
+    className = "w-56 cursor-pointer text-[26px] h-14 rounded-2xl text-white font-semibold gap-4 bg-linear-to-r from-[#ff484b] to-[#ff1e1e] flex items-center justify-center transition-transform hover:brightness-125  active:scale-95",
 }: PlayButtonProps) => {
     const { playVideo } = usePlayerManager();
     const { closePopup } = usePopupManager();
@@ -70,7 +70,7 @@ export const PlayButton = ({
 
     return (
         <div onClick={handlePlay} className={className}>
-            <SFIcon icon={sfPlayFill} size={28} />
+            <SFIcon icon={sfPlayFill} size={26} />
             <span>Watch Now</span>
         </div>
     );

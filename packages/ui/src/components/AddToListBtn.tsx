@@ -30,9 +30,9 @@ export const AddToListBtn: React.FC<AddToListBtnProps> = ({ id, type = "movie", 
     return (
         <div
             onClick={handleClick}
-            className={`w-54 cursor-pointer text-[20px] h-14 rounded-2xl font-semibold gap-4 flex items-center justify-center text-white transition-all bg-linear-to-r from-[#363636] to-[#131313] hover:brightness-125`}
+            className={`w-56 cursor-pointer text-[26px] h-14 rounded-2xl font-semibold gap-4 flex items-center justify-center text-white transition-all bg-linear-to-r from-[#363636] to-[#131313] hover:brightness-125`}
         >
-            <SFIcon icon={inList ? sfCheckmark : sfPlus} size={28} />
+            <SFIcon icon={inList ? sfCheckmark : sfPlus} size={26} />
             <span>{inList ? "Added to List" : "Add to List"}</span>
         </div>
     );
