@@ -7,3 +7,5 @@ dist-ssr
 !.env.example
 .DS_Store
 serviceAccount.json
+firebaseAccount.json
+serviceAccountKey.json

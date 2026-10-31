@@ -1,42 +1,28 @@
 import { initializeApp, cert, getApps } from 'firebase-admin/app';
 import { getAuth as adminGetAuth } from 'firebase-admin/auth';
 import { getFirestore } from 'firebase-admin/firestore';
-import fs from 'fs';
-import path from 'path';
 
-let serviceAccountPath = path.resolve(process.cwd(), 'serviceAccount.json');
-if (!fs.existsSync(serviceAccountPath)) {
-    serviceAccountPath = path.resolve(process.cwd(), 'serviceAccountKey.json');
-}
+const requiredEnv = ['FIREBASE_PROJECT_ID', 'FIREBASE_CLIENT_EMAIL', 'FIREBASE_PRIVATE_KEY'] as const;
 
 export const initFirebase = () => {
     if (getApps().length > 0) return;
 
-    if (process.env.FIREBASE_SERVICE_ACCOUNT) {
-        try {
-            const serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT);
-            initializeApp({ credential: cert(serviceAccount) });
-            console.log('✅ [Firebase] Admin SDK inizializzato tramite env FIREBASE_SERVICE_ACCOUNT');
-            return;
-        } catch (e) {
-            console.error('❌ Errore parsing FIREBASE_SERVICE_ACCOUNT env:', e);
-        }
+    const missing = requiredEnv.filter((name) => !process.env[name]);
+    if (missing.length > 0) {
+        throw new Error(
+            `[Firebase] Variabili mancanti nel .env: ${missing.join(', ')}. Vedi server/.env.example.`
+        );
     }
 
-    if (fs.existsSync(serviceAccountPath)) {
-        try {
-            const serviceAccount = JSON.parse(fs.readFileSync(serviceAccountPath, 'utf-8'));
-            initializeApp({ credential: cert(serviceAccount) });
-            console.log('✅ [Firebase] Admin SDK inizializzato tramite file serviceAccount');
-            return;
-        } catch (error) {
-            console.error('❌ [Firebase] Errore inizializzazione da file:', error);
-            return;
-        }
-    }
-
-    console.warn('⚠️  [Firebase] serviceAccountKey.json non trovato.');
-    console.warn('Scarica il file dalle impostazioni del progetto Firebase e inseriscilo nella cartella server/.');
+    initializeApp({
+        credential: cert({
+            projectId: process.env.FIREBASE_PROJECT_ID,
+            clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
+            // Nel .env la chiave va su una riga con \n al posto degli a capo
+            privateKey: process.env.FIREBASE_PRIVATE_KEY!.replace(/\\n/g, '\n'),
+        }),
+    });
+    console.log('✅ [Firebase] Admin SDK inizializzato tramite variabili .env');
 };
 
 export const getAuth = () => adminGetAuth();
