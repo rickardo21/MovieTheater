@@ -21,6 +21,7 @@ app.use(
             "http://localhost:3000",
             "http://192.168.1.114:5173",
             "https://tuodominio.com", // sostituisci con il tuo dominio in produzione
+            /^https:\/\/[a-z0-9-]+\.vercel\.app$/, // deploy della PWA su Vercel (ogni deploy ha un indirizzo diverso)
         ],
     })
 );
