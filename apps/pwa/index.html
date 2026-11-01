@@ -13,6 +13,31 @@
   </head>
   <body>
     <div id="root"></div>
+    <!-- Diagnostica: mostra a schermo errori JavaScript, utile su iPhone senza console -->
+    <script>
+      (function () {
+        function show(msg) {
+          var box = document.getElementById("debug-box");
+          if (!box) {
+            box = document.createElement("pre");
+            box.id = "debug-box";
+            box.style.cssText =
+              "position:fixed;left:0;right:0;top:0;z-index:99999;margin:0;padding:12px;max-height:50vh;overflow:auto;background:#300;color:#fff;font:12px/1.4 monospace;white-space:pre-wrap";
+            document.body.appendChild(box);
+          }
+          box.textContent += msg + "\n";
+        }
+        window.addEventListener("error", function (e) {
+          show("ERRORE: " + (e.message || "sconosciuto") + " (" + (e.filename || "") + ":" + (e.lineno || "") + ")");
+        });
+        window.addEventListener("unhandledrejection", function (e) {
+          show("PROMISE: " + (e.reason && (e.reason.message || e.reason)));
+        });
+        setTimeout(function () {
+          if (!document.getElementById("root").children.length) show("La app non si è avviata entro 5 secondi.");
+        }, 5000);
+      })();
+    </script>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
