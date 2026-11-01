@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { getMasterPlaylistForContent, chooseBestVideoQuality } from "../services/vixsrc";
+import { getMasterPlaylistForContent, chooseBestVideoQuality } from "../services/vixsrc.js";
 
 export const vixsrcRouter = Router();
 

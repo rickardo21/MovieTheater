@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { tmdbService } from "../services/tmdb";
+import { tmdbService } from "../services/tmdb.js";
 
 export const tmdbRouter = Router();
 

@@ -1,11 +1,11 @@
 import "dotenv/config";
 import express from "express";
 import cors from "cors";
-import { tmdbRouter } from "./routes/tmdb";
-import { vixsrcRouter } from "./routes/vixsrc";
-import { authRouter } from "./routes/auth";
-import { userRouter } from "./routes/user";
-import { initFirebase } from "./config/firebase";
+import { tmdbRouter } from "./routes/tmdb.js";
+import { vixsrcRouter } from "./routes/vixsrc.js";
+import { authRouter } from "./routes/auth.js";
+import { userRouter } from "./routes/user.js";
+import { initFirebase } from "./config/firebase.js";
 
 // Inizializza Firebase Admin
 initFirebase();

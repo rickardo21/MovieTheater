@@ -1,5 +1,5 @@
 import { TMDB } from "tmdb-ts";
-import { serverCache } from "../utils/cache";
+import { serverCache } from "../utils/cache.js";
 
 const token = process.env.TMDB_API_TOKEN;
 
