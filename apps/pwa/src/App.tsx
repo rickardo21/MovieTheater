@@ -31,7 +31,7 @@ export default function App() {
   return (
     <F7App {...f7params}>
       <Views tabs className="safe-areas">
-        <Toolbar tabbar labels bottom>
+        <Toolbar tabbar bottom className="tabbar-labels">
           <Link tabLink="#view-home" tabLinkActive iconF7="house_fill" text="Inizio" />
           <Link tabLink="#view-search" iconF7="magnifyingglass" text="Cerca" />
           <Link tabLink="#view-library" iconF7="rectangle_stack_fill" text="Libreria" />
