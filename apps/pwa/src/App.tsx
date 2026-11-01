@@ -1,21 +1,17 @@
-import { App as F7App, View, Page, Navbar, Block } from "framework7-react";
-
-// Base minima: una sola pagina, per verificare che l'app si avvii
-function HomePage() {
-  return (
-    <Page>
-      <Navbar title="MovieTheater" />
-      <Block>
-        <p>L'app si avvia correttamente.</p>
-      </Block>
-    </Page>
-  );
-}
+import { App as F7App, View } from "framework7-react";
+import MainPage from "./pages/MainPage";
+import DetailPage from "./pages/DetailPage";
+import WatchPage from "./pages/WatchPage";
 
 const f7params = {
   name: "MovieTheater",
   theme: "ios" as const,
-  routes: [{ path: "/", component: HomePage }],
+  routes: [
+    { path: "/", component: MainPage },
+    { path: "/detail/:type/:id/", component: DetailPage },
+    { path: "/watch/:type/:id/", component: WatchPage },
+    { path: "/watch/:type/:id/:season/:episode/", component: WatchPage },
+  ],
 };
 
 export default function App() {

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Page, Navbar, NavTitleLarge, Link, Block } from "framework7-react";
+import { Link } from "framework7-react";
 import Poster from "../components/Poster";
 import { apiGet, img, titleOf, type Paged, type TitleItem } from "../lib/api";
 
@@ -18,7 +18,7 @@ const SECTIONS = [
   { key: "tv-air", title: "In onda oggi", path: "/api/tmdb/tv/airing-today", mediaType: "tv" as const, ranked: false },
 ];
 
-export default function HomePage() {
+export default function HomeTab() {
   const [hero, setHero] = useState<TitleItem | null>(null);
   const [sections, setSections] = useState<Section[]>([]);
   const [error, setError] = useState<string | null>(null);
@@ -47,10 +47,8 @@ export default function HomePage() {
   const backdrop = img(hero?.backdrop_path, "w1280");
 
   return (
-    <Page>
-      <Navbar transparent>
-        <NavTitleLarge>Inizio</NavTitleLarge>
-      </Navbar>
+    <>
+      <h1 className="screen-title">Inizio</h1>
 
       {hero && (
         <Link href={`/detail/movie/${hero.id}/`} className="hero">
@@ -63,24 +61,19 @@ export default function HomePage() {
         </Link>
       )}
 
-      {error && <Block className="status-text">Impossibile caricare i contenuti: {error}</Block>}
-      {!error && sections.length === 0 && <Block className="status-text">Caricamento…</Block>}
+      {error && <p className="status-text">Impossibile caricare i contenuti: {error}</p>}
+      {!error && sections.length === 0 && <p className="status-text">Caricamento…</p>}
 
       {sections.map((s) => (
         <div key={s.key} className="section">
           <h2 className="section-title">{s.title}</h2>
           <div className="row">
             {s.items.slice(0, 10).map((item, i) => (
-              <Poster
-                key={`${s.key}-${item.id}`}
-                item={item}
-                mediaType={s.mediaType}
-                rank={s.ranked ? i + 1 : undefined}
-              />
+              <Poster key={`${s.key}-${item.id}`} item={item} mediaType={s.mediaType} rank={s.ranked ? i + 1 : undefined} />
             ))}
           </div>
         </div>
       ))}
-    </Page>
+    </>
   );
 }

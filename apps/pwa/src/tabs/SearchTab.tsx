@@ -1,5 +1,4 @@
 import { useState, type FormEvent } from "react";
-import { Page, Navbar, NavTitleLarge, Searchbar, Block } from "framework7-react";
 import Poster from "../components/Poster";
 import { apiGet, type Paged, type TitleItem } from "../lib/api";
 
@@ -9,14 +8,14 @@ interface Result {
   mediaType: "movie" | "tv";
 }
 
-export default function SearchPage() {
+export default function SearchTab() {
   const [query, setQuery] = useState("");
   const [results, setResults] = useState<Result[]>([]);
   const [status, setStatus] = useState<"idle" | "loading" | "error">("idle");
   const [searched, setSearched] = useState("");
 
-  const runSearch = async (e?: FormEvent) => {
-    e?.preventDefault();
+  const runSearch = async (e: FormEvent) => {
+    e.preventDefault();
     const q = query.trim();
     if (!q) return;
     setStatus("loading");
@@ -26,10 +25,12 @@ export default function SearchPage() {
         apiGet<Paged<TitleItem>>(`/api/tmdb/movies/search${params}`),
         apiGet<Paged<TitleItem>>(`/api/tmdb/tv/search${params}`),
       ]);
-      setResults([
-        ...movies.results.map((item) => ({ key: `m-${item.id}`, item, mediaType: "movie" as const })),
-        ...shows.results.map((item) => ({ key: `t-${item.id}`, item, mediaType: "tv" as const })),
-      ].filter((r) => r.item.poster_path));
+      setResults(
+        [
+          ...movies.results.map((item) => ({ key: `m-${item.id}`, item, mediaType: "movie" as const })),
+          ...shows.results.map((item) => ({ key: `t-${item.id}`, item, mediaType: "tv" as const })),
+        ].filter((r) => r.item.poster_path)
+      );
       setSearched(q);
       setStatus("idle");
     } catch {
@@ -38,26 +39,23 @@ export default function SearchPage() {
   };
 
   return (
-    <Page>
-      <Navbar transparent>
-        <NavTitleLarge>Cerca</NavTitleLarge>
-      </Navbar>
-
+    <>
+      <h1 className="screen-title">Cerca</h1>
       <form onSubmit={runSearch} className="search-form">
-        <Searchbar
-          placeholder="Film e serie"
+        <input
+          type="search"
           value={query}
-          onInput={(e: any) => setQuery(e.target.value)}
-          onSubmit={() => runSearch()}
-          disableButton
-          customSearch
+          placeholder="Film e serie"
+          onChange={(e) => setQuery(e.target.value)}
+          className="search-input"
         />
+        <button type="submit" className="chip chip-active">Cerca</button>
       </form>
 
-      {status === "loading" && <Block className="status-text">Ricerca in corso…</Block>}
-      {status === "error" && <Block className="status-text">Ricerca non riuscita. Riprova.</Block>}
+      {status === "loading" && <p className="status-text">Ricerca in corso…</p>}
+      {status === "error" && <p className="status-text">Ricerca non riuscita. Riprova.</p>}
       {status === "idle" && searched && results.length === 0 && (
-        <Block className="status-text">Nessun risultato per “{searched}”.</Block>
+        <p className="status-text">Nessun risultato per “{searched}”.</p>
       )}
 
       <div className="grid">
@@ -65,6 +63,6 @@ export default function SearchPage() {
           <Poster key={r.key} item={r.item} mediaType={r.mediaType} />
         ))}
       </div>
-    </Page>
+    </>
   );
 }
