@@ -3,7 +3,17 @@ const BASE: string =
 
 export async function apiGet<T = any>(path: string): Promise<T> {
   const res = await fetch(`${BASE}${path}`);
-  if (!res.ok) throw new Error(`HTTP ${res.status} su ${path}`);
+  if (!res.ok) {
+    // Mostra il messaggio d'errore del server, non solo il codice
+    let detail = "";
+    try {
+      const body = await res.json();
+      detail = body?.error ? `: ${body.error}` : "";
+    } catch {
+      detail = "";
+    }
+    throw new Error(`HTTP ${res.status} su ${path}${detail}`);
+  }
   return (await res.json()) as T;
 }
 
