@@ -1,48 +1,60 @@
-/* Tema: nero, accento blu di sistema, come nelle schermate di riferimento */
+/* MovieTheater: i colori di sistema vengono da Framework7 (chiaro/scuro automatico),
+   qui restano solo l'accento e i pochi elementi che Framework7 non ha. */
+
+/* Accento "biglietto del cinema": un solo colore, usato per azioni principali e stati.
+   Contrasto del testo accento: #b45f00 su bianco 5.3:1, #ffb340 su nero 11.4:1 */
 :root {
-  --f7-theme-color: #0a84ff;
-  --app-bg: #000000;
-  --app-surface: #1c1c1e;
-  --app-fg: #ffffff;
-  --app-muted: rgba(235, 235, 245, 0.6);
+  --f7-theme-color: #b45f00;
+  --f7-theme-color-rgb: 180, 95, 0;
+  --f7-theme-color-shade: #8c4a00;
+  --f7-theme-color-tint: #d97a14;
 }
 
-html.theme-dark body {
-  background: var(--app-bg);
-  color: var(--app-fg);
+:root.theme-dark,
+.theme-dark {
+  --f7-theme-color: #ffb340;
+  --f7-theme-color-rgb: 255, 179, 64;
+  --f7-theme-color-shade: #ff9f0a;
+  --f7-theme-color-tint: #ffc566;
 }
 
-.page {
-  background: var(--app-bg);
+/* Sul fondo chiaro il testo del pulsante pieno resta bianco; su quello ambra chiaro diventa scuro */
+.theme-dark .button-fill {
+  color: #1b1100;
 }
 
-/* Titoli grandi e testo di stato */
-.status-text,
-.empty-state p {
-  color: var(--app-muted);
-  text-align: center;
-}
-
+/* ---------- Stati vuoti ---------- */
 .empty-state {
-  padding: 48px 24px;
   text-align: center;
+  padding-block: 32px;
 }
 
-.empty-state h2 {
-  margin: 0 0 8px;
-  font-size: 22px;
+.empty-state h3 {
+  margin: 0 0 6px;
+  font-size: 1.25rem;
+  font-weight: 600;
 }
 
-/* Hero a schermo intero */
+.empty-state p {
+  margin: 0 0 16px;
+  color: var(--f7-block-footer-text-color, rgba(127, 127, 127, 0.9));
+  overflow-wrap: anywhere;
+}
+
+.footnote {
+  font-size: 0.8125rem;
+  color: var(--f7-block-footer-text-color, rgba(127, 127, 127, 0.9));
+}
+
+/* ---------- Hero ---------- */
 .hero {
   position: relative;
-  display: block;
-  height: 62vh;
-  min-height: 360px;
-  margin: 0 0 24px;
+  aspect-ratio: 4 / 5;
+  max-height: 62vh;
+  width: 100%;
   overflow: hidden;
+  background: rgba(127, 127, 127, 0.2);
   color: #fff;
-  text-decoration: none;
 }
 
 .hero-art {
@@ -53,82 +65,107 @@ html.theme-dark body {
   object-fit: cover;
 }
 
+.hero::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.85) 0%, rgba(0, 0, 0, 0.35) 40%, rgba(0, 0, 0, 0) 70%);
+  pointer-events: none;
+}
+
 .hero-body {
   position: absolute;
-  left: 16px;
-  right: 16px;
-  bottom: 20px;
+  z-index: 1;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 0 16px 20px;
   text-align: center;
 }
 
 .hero-kicker {
   margin: 0 0 4px;
-  font-size: 13px;
-  letter-spacing: 0.6px;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
-  color: var(--app-muted);
+  color: rgba(255, 255, 255, 0.78);
 }
 
 .hero-title {
   margin: 0 0 14px;
-  font-size: 28px;
+  font-size: 2rem;
+  line-height: 1.1;
   font-weight: 700;
+  letter-spacing: -0.02em;
+  text-wrap: balance;
 }
 
-.hero-play {
-  display: inline-block;
-  padding: 12px 28px;
-  border-radius: 999px;
+.hero-actions {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+}
+
+/* Sopra la foto i pulsanti sono sempre bianco e vetro, in chiaro e in scuro */
+.hero .button-fill {
   background: #fff;
   color: #000;
-  font-size: 17px;
-  font-weight: 600;
 }
 
-/* Sezioni e righe di locandine */
-.section {
-  margin-bottom: 28px;
+.hero .button-tonal {
+  background: rgba(255, 255, 255, 0.28);
+  color: #fff;
+  -webkit-backdrop-filter: blur(20px);
+  backdrop-filter: blur(20px);
 }
 
-.section-title {
-  margin: 0 16px 12px;
-  font-size: 22px;
-  font-weight: 700;
+/* ---------- Righe di locandine ---------- */
+.rail-section {
+  margin-bottom: 8px;
 }
 
-.row {
+.rail {
   display: flex;
   gap: 12px;
   overflow-x: auto;
   padding: 0 16px 8px;
   scroll-snap-type: x proximity;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
 }
 
-.row::-webkit-scrollbar {
+.rail::-webkit-scrollbar {
   display: none;
 }
 
 .poster {
-  flex: 0 0 120px;
-  color: inherit;
-  text-decoration: none;
+  display: block;
+  flex: 0 0 118px;
+  height: auto;
+  line-height: inherit;
+  text-align: left;
   scroll-snap-align: start;
-  transition: transform 280ms cubic-bezier(0.2, 0.8, 0.2, 1);
-}
-
-.poster:active {
-  transform: scale(0.97);
+  color: var(--f7-text-color);
 }
 
 .poster-art {
   position: relative;
-  height: 180px;
-  border-radius: 12px;
+  display: block;
+  aspect-ratio: 2 / 3;
+  border-radius: 10px;
   overflow: hidden;
-  background: var(--app-surface);
+  background: rgba(127, 127, 127, 0.2);
+  transition: transform 280ms cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.poster:active .poster-art {
+  transform: scale(0.97);
+  transition-duration: 100ms;
 }
 
 .poster-art img {
+  display: block;
   width: 100%;
   height: 100%;
   object-fit: cover;
@@ -141,233 +178,222 @@ html.theme-dark body {
   justify-content: center;
   padding: 12px;
   text-align: center;
-  font-size: 13px;
-  color: var(--app-muted);
+  font-size: 0.8125rem;
+  color: var(--f7-block-footer-text-color, rgba(127, 127, 127, 0.9));
 }
 
 .poster-rank {
   position: absolute;
-  left: 8px;
-  bottom: -4px;
-  font-size: 56px;
+  left: 6px;
+  bottom: -6px;
+  font-size: 3.5rem;
   font-weight: 800;
+  line-height: 1;
+  letter-spacing: -0.04em;
   color: #fff;
-  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.7);
 }
 
 .poster-name {
-  margin: 8px 0 0;
-  font-size: 13px;
-  font-weight: 600;
-}
-
-/* Griglia della ricerca */
-.grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 16px;
-  padding: 0 16px 24px;
-}
-
-.grid .poster {
-  flex: none;
-  width: 100%;
-}
-
-.search-form {
-  padding: 0 16px 8px;
-}
-
-/* Dettaglio */
-.detail-hero {
-  height: 240px;
-  background: var(--app-surface);
-  overflow: hidden;
-}
-
-.detail-hero img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.detail-info {
-  padding: 16px 16px 8px;
-}
-
-.detail-info h1 {
-  margin: 0 0 6px;
-  font-size: 30px;
-  font-weight: 700;
-}
-
-.detail-meta {
-  margin: 0 0 14px;
-  color: var(--app-muted);
-  font-size: 15px;
-}
-
-.detail-overview {
-  margin: 0 0 18px;
-  font-size: 16px;
-  line-height: 1.45;
-  color: rgba(235, 235, 245, 0.85);
-}
-
-.button-primary {
-  display: inline-block;
-  padding: 12px 28px;
-  border-radius: 999px;
-  background: var(--f7-theme-color);
-  color: #fff;
-  font-size: 17px;
-  font-weight: 600;
-  text-decoration: none;
-}
-
-.season-picker {
-  display: flex;
-  gap: 8px;
-  overflow-x: auto;
-  padding: 16px;
-}
-
-.chip {
-  flex: none;
-  padding: 8px 16px;
-  border: 0;
-  border-radius: 999px;
-  background: var(--app-surface);
-  color: var(--app-fg);
-  font-size: 15px;
-}
-
-.chip-active {
-  background: #fff;
-  color: #000;
-}
-
-.episode-list {
-  display: grid;
-  gap: 12px;
-  padding: 0 16px 24px;
-}
-
-.episode {
-  display: flex;
-  gap: 12px;
-  padding: 10px;
-  border-radius: 14px;
-  background: var(--app-surface);
-  color: inherit;
-  text-decoration: none;
-}
-
-.episode-still {
-  flex: 0 0 140px;
-  aspect-ratio: 16 / 9;
-  border-radius: 10px;
-  overflow: hidden;
-  background: #000;
-}
-
-.episode-still img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.episode-text {
-  min-width: 0;
-}
-
-.episode-kicker {
-  margin: 0 0 2px;
-  font-size: 12px;
-  color: var(--app-muted);
-}
-
-.episode-name {
-  margin: 0 0 4px;
-  font-size: 16px;
-  font-weight: 600;
-}
-
-.episode-overview {
-  margin: 0;
-  font-size: 13px;
-  color: var(--app-muted);
   display: -webkit-box;
+  margin-top: 6px;
+  font-size: 0.8125rem;
+  line-height: 1.25;
+  font-weight: 500;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
 
-/* Player */
+/* ---------- Liste ---------- */
+.thumb {
+  border-radius: 8px;
+  object-fit: cover;
+  background: rgba(127, 127, 127, 0.2);
+}
+
+.resume-thumb {
+  position: relative;
+  display: block;
+  width: 112px;
+  height: 63px;
+  border-radius: 8px;
+  overflow: hidden;
+  background: rgba(127, 127, 127, 0.2);
+}
+
+.resume-thumb img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.resume-thumb::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 3px;
+  background: rgba(255, 255, 255, 0.35);
+}
+
+.resume-bar {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: 3px;
+  background: var(--f7-theme-color);
+}
+
+.server-actions {
+  display: flex;
+  gap: 12px;
+}
+
+.server-actions .button {
+  flex: 1;
+}
+
+/* ---------- Dettaglio ---------- */
+.detail-hero {
+  position: relative;
+  aspect-ratio: 16 / 10;
+  /* L'immagine sale sotto la barra trasparente, come nelle schermate di dettaglio di sistema */
+  margin-top: calc(-1 * (var(--f7-navbar-height) + var(--f7-safe-area-top)));
+  overflow: hidden;
+  background: rgba(127, 127, 127, 0.2);
+}
+
+.detail-hero img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.detail-hero::before,
+.detail-hero::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  pointer-events: none;
+}
+
+.detail-hero::before {
+  top: 0;
+  height: 40%;
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0));
+}
+
+.detail-hero::after {
+  bottom: 0;
+  height: 45%;
+  background: linear-gradient(to top, var(--f7-page-bg-color), rgba(0, 0, 0, 0));
+}
+
+.detail-head {
+  margin-top: -20px;
+  position: relative;
+}
+
+.detail-title {
+  margin: 0 0 4px;
+  font-size: 1.75rem;
+  line-height: 1.15;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  text-wrap: balance;
+}
+
+.detail-meta {
+  margin: 0 0 14px;
+  font-size: 0.9375rem;
+  color: var(--f7-block-footer-text-color, rgba(127, 127, 127, 0.9));
+}
+
+.detail-actions {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.detail-actions .button-fill {
+  flex: 1;
+}
+
+.detail-genres {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 14px;
+}
+
+.detail-overview {
+  margin: 0;
+  font-size: 1rem;
+  line-height: 1.45;
+}
+
+/* ---------- Player ---------- */
+.player-page {
+  --f7-page-bg-color: #000;
+}
+
 .player {
   position: relative;
+  aspect-ratio: 16 / 9;
   background: #000;
 }
 
 .player video {
   display: block;
   width: 100%;
-  max-height: 60vh;
+  height: 100%;
   background: #000;
 }
 
-.player-status {
-  padding: 24px;
+.player-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  background: rgba(0, 0, 0, 0.6);
+  color: #fff;
   text-align: center;
-  color: var(--app-muted);
+}
+
+.player-error p {
+  margin: 0 0 12px;
+  overflow-wrap: anywhere;
 }
 
 .player-controls {
   display: flex;
+  flex-wrap: wrap;
   justify-content: center;
   gap: 12px;
-  padding: 16px;
 }
 
+/* ---------- Preferenze di sistema ---------- */
 @media (prefers-reduced-motion: reduce) {
-  .poster {
+  .poster-art {
     transition: none;
+  }
+
+  .skeleton-effect-wave .skeleton-block::after {
+    animation: none;
   }
 }
 
-/* Titolo di ogni scheda */
-.screen-title {
-  margin: 56px 16px 16px;
-  font-size: 34px;
-  font-weight: 700;
-}
-
-.search-form {
-  display: flex;
-  gap: 10px;
-  padding: 0 16px 16px;
-}
-
-.search-input {
-  flex: 1;
-  min-width: 0;
-  padding: 12px 16px;
-  border: 0;
-  border-radius: 12px;
-  background: var(--app-surface);
-  color: var(--app-fg);
-  font-size: 17px;
-  outline: none;
-}
-
-.empty-state {
-  padding: 48px 24px;
-  text-align: center;
-  color: var(--app-muted);
-}
-
-.empty-state h2 {
-  margin: 0 0 8px;
-  font-size: 22px;
-  color: var(--app-fg);
+@media (prefers-reduced-transparency: reduce) {
+  .hero .button-tonal {
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+    background: rgba(60, 60, 60, 0.9);
+  }
 }

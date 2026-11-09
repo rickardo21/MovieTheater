@@ -1,8 +1,33 @@
-const BASE: string =
+const DEFAULT_BASE: string =
   (import.meta.env.VITE_API_URL as string | undefined) ?? "https://movietheater-yart.onrender.com";
 
-export async function apiGet<T = any>(path: string): Promise<T> {
-  const res = await fetch(`${BASE}${path}`);
+const BASE_KEY = "mt.apiBase";
+
+// L'indirizzo del server si può cambiare dalla scheda Libreria (utile per un server sul proprio computer)
+export function getApiBase(): string {
+  try {
+    const saved = localStorage.getItem(BASE_KEY);
+    if (saved) return saved;
+  } catch {
+    // storage non disponibile: si usa l'indirizzo predefinito
+  }
+  return DEFAULT_BASE;
+}
+
+export function setApiBase(url: string) {
+  const clean = url.trim().replace(/\/+$/, "");
+  try {
+    if (clean) localStorage.setItem(BASE_KEY, clean);
+    else localStorage.removeItem(BASE_KEY);
+  } catch {
+    // ignorato: l'impostazione vale solo per questa sessione
+  }
+}
+
+export const defaultApiBase = DEFAULT_BASE;
+
+export async function apiGet<T = unknown>(path: string): Promise<T> {
+  const res = await fetch(`${getApiBase()}${path}`);
   if (!res.ok) {
     // Mostra il messaggio d'errore del server, non solo il codice
     let detail = "";
@@ -17,9 +42,11 @@ export async function apiGet<T = any>(path: string): Promise<T> {
   return (await res.json()) as T;
 }
 
-export function img(path: string | null | undefined, size: "w342" | "w780" | "w1280" | "original" = "w342") {
+export function img(path: string | null | undefined, size: "w185" | "w342" | "w780" | "w1280" | "original" = "w342") {
   return path ? `https://image.tmdb.org/t/p/${size}${path}` : null;
 }
+
+export type MediaType = "movie" | "tv";
 
 export interface Paged<T> {
   page: number;
@@ -39,9 +66,14 @@ export interface TitleItem {
   first_air_date?: string;
 }
 
+export interface Genre {
+  id: number;
+  name: string;
+}
+
 export interface MovieDetail extends TitleItem {
   runtime: number | null;
-  genres: { id: number; name: string }[];
+  genres: Genre[];
 }
 
 export interface TvSeasonSummary {
@@ -54,7 +86,7 @@ export interface TvSeasonSummary {
 
 export interface TvDetail extends TitleItem {
   number_of_seasons: number;
-  genres: { id: number; name: string }[];
+  genres: Genre[];
   seasons: TvSeasonSummary[];
 }
 

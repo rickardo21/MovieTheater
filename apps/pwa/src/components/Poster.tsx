@@ -1,9 +1,9 @@
 import { Link } from "framework7-react";
-import { img, titleOf, type TitleItem } from "../lib/api";
+import { img, titleOf, type MediaType, type TitleItem } from "../lib/api";
 
 interface PosterProps {
   item: TitleItem;
-  mediaType: "movie" | "tv";
+  mediaType: MediaType;
   rank?: number;
 }
 
@@ -13,12 +13,12 @@ export default function Poster({ item, mediaType, rank }: PosterProps) {
   const title = titleOf(item);
 
   return (
-    <Link href={`/detail/${mediaType}/${item.id}/`} className="poster">
-      <div className="poster-art">
-        {src ? <img src={src} alt="" loading="lazy" /> : <div className="poster-fallback">{title}</div>}
+    <Link href={`/detail/${mediaType}/${item.id}/`} className="poster" aria-label={title}>
+      <span className="poster-art">
+        {src ? <img src={src} alt="" loading="lazy" /> : <span className="poster-fallback">{title}</span>}
         {rank !== undefined && <span className="poster-rank">{rank}</span>}
-      </div>
-      <p className="poster-name">{title}</p>
+      </span>
+      <span className="poster-name">{title}</span>
     </Link>
   );
 }
